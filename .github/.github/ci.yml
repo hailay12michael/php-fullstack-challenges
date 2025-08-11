@@ -1,0 +1,32 @@
+name: CI All Challenges
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        challenge: [
+          "challenge-01-grpc-echo",
+          "challenge-02-legacy-auth",
+          "challenge-03-long-polling-notify",
+          "challenge-04-file-upload-scan",
+          "challenge-05-grpc-chat",
+          "challenge-06-error-logger",
+          "challenge-07-image-processing",
+          "challenge-08-markdown-previewer",
+          "challenge-09-graphql-books",
+          "challenge-10-docker-microservices"
+        ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install PHP deps
+        run: |
+          cd ${{ matrix.challenge }}/backend-php
+          composer install || true
+      - name: Install React deps
+        run: |
+          cd ${{ matrix.challenge }}/frontend-react
+          npm install
+          npm run build
